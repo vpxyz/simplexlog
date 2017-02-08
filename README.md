@@ -75,13 +75,13 @@ func main() {
 	// Set different tag for any level
 	// If you need, you can use a different io.Writer for each level witch different flags and prefix
 	l := sl.New(
-		sl.SetDebug(sl.Option{Out: os.Stdout, Label: sl.LabelDebug + "==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
-		sl.SetTrace(sl.Option{Out: os.Stdout, Label: sl.LabelTrace, Flags: sl.DefaultLogFlags | log.Lshortfile}),
-		sl.SetInfo(sl.Option{Out: os.Stdout, Label: sl.LabelInfo, Flags: sl.DefaultLogFlags}),
-		sl.SetNotice(sl.Option{Out: os.Stdout, Label: sl.LabelNotice, Flags: sl.DefaultLogFlags}),
-		sl.SetWarning(sl.Option{Out: os.Stdout, Label: sl.LabelWarning + " ==> ", Flags: sl.DefaultLogFlags}),
-		sl.SetError(sl.Option{Out: os.Stderr, Label: sl.LabelError, Flags: sl.DefaultLogFlags}),
-		sl.SetCritical(sl.Option{Out: os.Stderr, Label: sl.LabelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LabelDebug + "==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LabelTrace, Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.LabelInfo, Flags: sl.DefaultLogFlags}),
+		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LabelNotice, Flags: sl.DefaultLogFlags}),
+		sl.SetWarning(sl.Config{Out: os.Stdout, Label: sl.LabelWarning + " ==> ", Flags: sl.DefaultLogFlags}),
+		sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LabelError, Flags: sl.DefaultLogFlags}),
+		sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LabelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 	)
 
     // print all log

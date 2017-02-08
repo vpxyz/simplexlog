@@ -66,8 +66,8 @@ type Logger struct {
 	level LogLevel
 }
 
-// Option log option
-type Option struct {
+// Config log option
+type Config struct {
 	// Out is the output writer
 	Out io.Writer
 	// Label the prefix of a log line
@@ -77,9 +77,9 @@ type Option struct {
 }
 
 // SetDefault set the options of default logger used by all log level except Error, Critical level and Fatal and Panic
-func SetDefault(o Option) func(*Logger) {
+func SetDefault(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logWarning = log.New(o.Out, o.Label, o.Flags)
+		l.logWarning = log.New(c.Out, c.Label, c.Flags)
 		l.logInfo = l.logWarning
 		l.logNotice = l.logWarning
 		l.logDebug = l.logWarning
@@ -88,17 +88,17 @@ func SetDefault(o Option) func(*Logger) {
 }
 
 // SetErrorDefault set the options of default logger for error (used by Error, Critical level and by Fatal and Panic)
-func SetErrorDefault(o Option) func(*Logger) {
+func SetErrorDefault(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logError = log.New(o.Out, o.Label, o.Flags)
+		l.logError = log.New(c.Out, c.Label, c.Flags)
 		l.logCritical = l.logError
 	}
 }
 
 // SetAllDefault set the options of default logger used by all the log level
-func SetAllDefault(o Option) func(*Logger) {
+func SetAllDefault(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logWarning = log.New(o.Out, o.Label, o.Flags)
+		l.logWarning = log.New(c.Out, c.Label, c.Flags)
 		l.logInfo = l.logWarning
 		l.logNotice = l.logWarning
 		l.logDebug = l.logWarning
@@ -109,56 +109,56 @@ func SetAllDefault(o Option) func(*Logger) {
 }
 
 // SetDebug set the options of debug logger
-func SetDebug(o Option) func(*Logger) {
+func SetDebug(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logDebug = log.New(o.Out, o.Label, o.Flags)
+		l.logDebug = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // SetTrace set the options of trace logger
-func SetTrace(o Option) func(*Logger) {
+func SetTrace(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logTrace = log.New(o.Out, o.Label, o.Flags)
+		l.logTrace = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // SetCritical set the options of critical logger
-func SetCritical(o Option) func(*Logger) {
+func SetCritical(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logCritical = log.New(o.Out, o.Label, o.Flags)
+		l.logCritical = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // SetCritical set the options of error logger
-func SetError(o Option) func(*Logger) {
+func SetError(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logError = log.New(o.Out, o.Label, o.Flags)
+		l.logError = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // SetWarning set the option of warning logger
-func SetWarning(o Option) func(*Logger) {
+func SetWarning(o Config) func(*Logger) {
 	return func(l *Logger) {
 		l.logWarning = log.New(o.Out, o.Label, o.Flags)
 	}
 }
 
 // SetNotice set the option of notice logger
-func SetNotice(o Option) func(*Logger) {
+func SetNotice(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logNotice = log.New(o.Out, o.Label, o.Flags)
+		l.logNotice = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // SetInfo set the option of info logger
-func SetInfo(o Option) func(*Logger) {
+func SetInfo(c Config) func(*Logger) {
 	return func(l *Logger) {
-		l.logInfo = log.New(o.Out, o.Label, o.Flags)
+		l.logInfo = log.New(c.Out, c.Label, c.Flags)
 	}
 }
 
 // New return a new logger. By default, all logs message are output to os.Stdout, except "error" and "critical" message that are logged to os.Stderr.
-func New(options ...func(*Logger)) *Logger {
+func New(configurations ...func(*Logger)) *Logger {
 	// default logger
 	dl := log.New(os.Stdout, "", DefaultLogFlags)
 	// default error logger
@@ -167,8 +167,8 @@ func New(options ...func(*Logger)) *Logger {
 	logger := Logger{logCritical: el, logError: el, logWarning: dl, logInfo: dl, logDebug: dl, logTrace: dl, level: Info}
 
 	// now customize logger
-	for _, opt := range options {
-		opt(&logger)
+	for _, config := range configurations {
+		config(&logger)
 	}
 
 	return &logger
