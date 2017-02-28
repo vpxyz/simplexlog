@@ -3,7 +3,7 @@ SIMPLEXLOG log library
 
 Simplexlog simple wrapper for the go standard log package, that adds log level.
 
-The standard log package in enough (imho) for many applications, but sometimes
+The standard log package is enough (imho) for many applications, but sometimes
 is usefull to have some log level.
 Simplexlog is a wrapper that adds some log level, the ability to use different
 io.Writer for different level.
