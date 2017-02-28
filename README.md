@@ -1,4 +1,4 @@
-SIMPLEXLOG log library
+SIMPLEXLOG leveled logging library
 ======================
 
 Simplexlog simple wrapper for the go standard log package, that adds log level.
