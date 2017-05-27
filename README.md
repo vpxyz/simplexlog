@@ -35,23 +35,23 @@ func main() {
     l := simplexlog.New() 
 
     // the defaul log level is Info
-	l.TracePrint("Trace log")
+	l.Trace("Trace log")
 
-	l.InfoPrint("Info log")
+	l.Info("Info log")
 
-	l.NoticePrint("Notice log")
+	l.Notice("Notice log")
 
-	l.WarningPrint("Warning log")
+	l.Warning("Warning log")
 
-	l.DebugPrint("Debug log")
+	l.Debug("Debug log")
 
-	l.ErrorPrint("Error log")
+	l.Error("Error log")
 
-	l.CriticalPrint("Critical log")
+	l.Critical("Critical log")
     
     l.SetLevel(sl.Warning)
     
-    l.InfoPrint("This is hidden")
+    l.Info("This is hidden")
 
 	// if you need, you can pass around an standard log.Logger, bypassing the LogLevel setting
 	l.CriticalLogger().Print("test")
@@ -87,23 +87,24 @@ func main() {
     // print all log
 	l.SetLevel(sl.All)
 
-	l.TracePrintf("Trace log %s", "!!!")
+	l.Tracef("Trace log %s", "!!!")
 
-	l.InfoPrint("Info log")
+	l.Info("Info log")
 
-	l.NoticePrint("Notice log")
+	l.Notice("Notice log")
 
-	l.WarningPrint("Warning log")
+	l.Warning("Warning log")
 
-	l.DebugPrint("Debug log")
+	l.Debug("Debug log")
 
-	l.ErrorPrint("Error log")
+	l.Error("Error log")
 
-	l.CriticalPrint("Critical log")
-    
+	l.Critical("Critical log")
+
+    // change level
     l.SetLevel(sl.Warning)
     
-    l.InfoPrint("This is hidden")
+    l.Info("This is hidden")
 
 	// if you need, you can pass around an standard log.Logger, bypassing the LogLevel setting
 	l.CriticalLogger().Print("test")

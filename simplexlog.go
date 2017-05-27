@@ -188,7 +188,7 @@ func (l *Logger) Level() LogLevel {
 	return l.level
 }
 
-// Infof print,accordind to format, to the Info logger
+// Infof print, accordind to format, to the Info logger
 func (l *Logger) Infof(format string, v ...interface{}) {
 	if l.Level() >= Info {
 		l.logInfo.Printf(format, v...)
