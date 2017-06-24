@@ -13,23 +13,6 @@ const (
 	// DefaultLogFlags default flagsfor log
 	DefaultLogFlags = log.Ldate | log.Ltime | log.Lmicroseconds
 
-	// Some usefull predefined label
-
-	// LabelCritical critical label
-	LabelCritical = "CRITICAL "
-	// LabelError error label
-	LabelError = "ERROR "
-	// LabelWarning warning label
-	LabelWarning = "WARNING "
-	// LabelNotice notice label
-	LabelNotice = "NOTICE "
-	// LabelInfo info label
-	LabelInfo = "INFO "
-	// LabelDebug debug label
-	LabelDebug = "DEBUG "
-	// LabelTrace trace label
-	LabelTrace = "TRACE "
-
 	// Log levels
 
 	// Critical log level
@@ -48,6 +31,23 @@ const (
 	Trace
 	// All log level
 	All
+
+	// Some usefull predefined label
+
+	// LabelCritical critical label
+	LabelCritical = "CRITICAL "
+	// LabelError error label
+	LabelError = "ERROR "
+	// LabelWarning warning label
+	LabelWarning = "WARNING "
+	// LabelNotice notice label
+	LabelNotice = "NOTICE "
+	// LabelInfo info label
+	LabelInfo = "INFO "
+	// LabelDebug debug label
+	LabelDebug = "DEBUG "
+	// LabelTrace trace label
+	LabelTrace = "TRACE "
 )
 
 // LogLevel level of log
