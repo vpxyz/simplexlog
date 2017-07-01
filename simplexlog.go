@@ -159,12 +159,16 @@ func SetInfo(c Config) func(*Logger) {
 
 // New return a new logger. By default, all logs message are output to os.Stdout, except "error" and "critical" message that are logged to os.Stderr.
 func New(configurations ...func(*Logger)) *Logger {
-	// default logger
-	dl := log.New(os.Stdout, "", DefaultLogFlags)
-	// default error logger
-	el := log.New(os.Stderr, "", DefaultLogFlags)
-
-	logger := Logger{logCritical: el, logError: el, logWarning: dl, logInfo: dl, logDebug: dl, logTrace: dl, level: Info}
+	// default log config
+	logger := Logger{
+		logCritical: log.New(os.Stderr, LabelCritical, DefaultLogFlags),
+		logError:    log.New(os.Stderr, LabelError, DefaultLogFlags),
+		logWarning:  log.New(os.Stdout, LabelWarning, DefaultLogFlags),
+		logInfo:     log.New(os.Stdout, LabelInfo, DefaultLogFlags),
+		logDebug:    log.New(os.Stdout, LabelDebug, DefaultLogFlags),
+		logTrace:    log.New(os.Stdout, LabelTrace, DefaultLogFlags),
+		level:       Info,
+	}
 
 	// now customize logger
 	for _, config := range configurations {
