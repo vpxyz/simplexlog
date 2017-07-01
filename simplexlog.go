@@ -164,6 +164,7 @@ func New(configurations ...func(*Logger)) *Logger {
 		logCritical: log.New(os.Stderr, LabelCritical, DefaultLogFlags),
 		logError:    log.New(os.Stderr, LabelError, DefaultLogFlags),
 		logWarning:  log.New(os.Stdout, LabelWarning, DefaultLogFlags),
+		logNotice:   log.New(os.Stdout, LabelNotice, DefaultLogFlags),
 		logInfo:     log.New(os.Stdout, LabelInfo, DefaultLogFlags),
 		logDebug:    log.New(os.Stdout, LabelDebug, DefaultLogFlags),
 		logTrace:    log.New(os.Stdout, LabelTrace, DefaultLogFlags),
