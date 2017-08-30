@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"sync"
 )
 
@@ -32,22 +33,24 @@ const (
 	// All log level
 	All
 
-	// Some usefull predefined label
+	// Level Name
 
-	// LabelCritical critical label
-	LabelCritical = "CRITICAL "
-	// LabelError error label
-	LabelError = "ERROR "
-	// LabelWarning warning label
-	LabelWarning = "WARNING "
-	// LabelNotice notice label
-	LabelNotice = "NOTICE "
-	// LabelInfo info label
-	LabelInfo = "INFO "
-	// LabelDebug debug label
-	LabelDebug = "DEBUG "
-	// LabelTrace trace label
-	LabelTrace = "TRACE "
+	// LevelCritical critical level
+	LevelCritical = "CRITICAL"
+	// LevelError error level
+	LevelError = "ERROR"
+	// LevelWarning warning level
+	LevelWarning = "WARNING"
+	// LevelNotice notice level
+	LevelNotice = "NOTICE"
+	// LevelInfo info level
+	LevelInfo = "INFO"
+	// LevelDebug debug level
+	LevelDebug = "DEBUG"
+	// LevelTrace trace level
+	LevelTrace = "TRACE"
+	// LevelAll all level
+	LevelAll = "ALL"
 )
 
 // LogLevel level of log
@@ -161,13 +164,13 @@ func SetInfo(c Config) func(*Logger) {
 func New(configurations ...func(*Logger)) *Logger {
 	// default log config
 	logger := Logger{
-		logCritical: log.New(os.Stderr, LabelCritical, DefaultLogFlags),
-		logError:    log.New(os.Stderr, LabelError, DefaultLogFlags),
-		logWarning:  log.New(os.Stdout, LabelWarning, DefaultLogFlags),
-		logNotice:   log.New(os.Stdout, LabelNotice, DefaultLogFlags),
-		logInfo:     log.New(os.Stdout, LabelInfo, DefaultLogFlags),
-		logDebug:    log.New(os.Stdout, LabelDebug, DefaultLogFlags),
-		logTrace:    log.New(os.Stdout, LabelTrace, DefaultLogFlags),
+		logCritical: log.New(os.Stderr, LevelCritical+" ", DefaultLogFlags),
+		logError:    log.New(os.Stderr, LevelError+" ", DefaultLogFlags),
+		logWarning:  log.New(os.Stdout, LevelWarning+" ", DefaultLogFlags),
+		logNotice:   log.New(os.Stdout, LevelNotice+" ", DefaultLogFlags),
+		logInfo:     log.New(os.Stdout, LevelInfo+" ", DefaultLogFlags),
+		logDebug:    log.New(os.Stdout, LevelDebug+" ", DefaultLogFlags),
+		logTrace:    log.New(os.Stdout, LevelTrace+" ", DefaultLogFlags),
 		level:       Info,
 	}
 
@@ -179,11 +182,41 @@ func New(configurations ...func(*Logger)) *Logger {
 	return &logger
 }
 
-// SetLevel change the log level
-func (l *Logger) SetLevel(level LogLevel) {
+// SwitchTo change the log level
+func (l *Logger) SwitchTo(level LogLevel) {
+	if level < Critical || level > All {
+		return
+	}
+
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 	l.level = level
+}
+
+// SwitchToLevel change log level, must match (case insensitive) level name (like LevelTrace, LevelCritical etc)
+func (l *Logger) SwitchToLevel(level string) {
+	level = strings.TrimSpace(strings.ToUpper(level))
+
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+	switch level {
+	case LevelCritical:
+		l.level = Critical
+	case LevelError:
+		l.level = Error
+	case LevelWarning:
+		l.level = Warning
+	case LevelNotice:
+		l.level = Notice
+	case LevelInfo:
+		l.level = Info
+	case LevelDebug:
+		l.level = Debug
+	case LevelTrace:
+		l.level = Trace
+	case LevelAll:
+		l.level = All
+	}
 }
 
 // Level return the current log level

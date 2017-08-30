@@ -9,6 +9,7 @@ Simplexlog is a wrapper that adds some log level, the ability to use different
 io.Writer for different level.
 
 The log levels are: TRACE, DEBUG, CRITICAL, ERROR, WARNING, NOTICE, INFO
+or ALL to switch on all levels
 
 Simplexlog is concurrent safe.
 
@@ -75,17 +76,17 @@ func main() {
 	// Set different tag for any level
 	// If you need, you can use a different io.Writer for each level witch different flags and prefix
 	l := sl.New(
-		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LabelDebug + "==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
-		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LabelTrace + "===> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
-		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.LabelInfo + "=>", Flags: sl.DefaultLogFlags}),
-		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LabelNotice, Flags: sl.DefaultLogFlags}),
-		sl.SetWarning(sl.Config{Out: os.Stdout, Label: sl.LabelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
-		sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LabelError, Flags: sl.DefaultLogFlags}),
-		sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LabelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LevelDebug + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LevelTrace + " ===> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.Levelnfo + " =>", Flags: sl.DefaultLogFlags}),
+		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LevellNotice + ": ", Flags: sl.DefaultLogFlags}),
+		sl.SetWarning(sl.Config{Out: os.Stdout, Label: slevelelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
+		sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LevelError + " ", Flags: sl.DefaultLogFlags}),
+		sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LevelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 	)
 
     // print all log
-	l.SetLevel(sl.All)
+	l.SwitchTo(sl.All)
 
 	l.Tracef("Trace log %s", "!!!")
 
@@ -102,12 +103,27 @@ func main() {
 	l.Critical("Critical log")
 
     // change level
-    l.SetLevel(sl.Warning)
+    l.SwitchTo(sl.Warning)
     
     l.Info("This is hidden")
 
 	// if you need, you can pass around an standard log.Logger, bypassing the LogLevel setting
 	l.CriticalLogger().Print("test")
+
+    // change the log level using log level name (case insensitive)
+   	l.SwitchToLevel("error")
+
+	l.Infof("Info log")
+
+	l.Noticef("Notice log")
+
+	l.Warningf("Warning log")
+
+	l.Debugf("Debug log")
+
+	l.Errorf("Error log")
+
+	l.Criticalf("Critical log")
 
 }
 ```
