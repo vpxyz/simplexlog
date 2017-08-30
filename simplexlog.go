@@ -226,6 +226,32 @@ func (l *Logger) Level() LogLevel {
 	return l.level
 }
 
+// LevelName return the current level name
+func (l *Logger) LevelName() string {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+	switch l.level {
+	case Critical:
+		return LevelCritical
+	case Error:
+		return LevelError
+	case Warning:
+		return LevelWarning
+	case Notice:
+		return LevelNotice
+	case Info:
+		return LevelInfo
+	case Debug:
+		return LevelDebug
+	case Trace:
+		return LevelTrace
+	case All:
+		return LevelAll
+	default:
+		return "?"
+	}
+}
+
 // Infof print, accordind to format, to the Info logger
 func (l *Logger) Infof(format string, v ...interface{}) {
 	if l.Level() >= Info {

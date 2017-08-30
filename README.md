@@ -50,7 +50,7 @@ func main() {
 
 	l.Critical("Critical log")
     
-    l.SetLevel(sl.Warning)
+    l.SwitchTo(sl.Warning)
     
     l.Info("This is hidden")
 
