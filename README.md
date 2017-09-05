@@ -111,7 +111,7 @@ func main() {
 	l.CriticalLogger().Print("test")
 
     // change the log level using log level name (case insensitive)
-   	l.SwitchToLevel("error")
+   	l.SwitchTo("error")
 
 	l.Infof("Info log")
 

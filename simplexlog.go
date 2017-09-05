@@ -13,7 +13,9 @@ import (
 const (
 	// DefaultLogFlags default flagsfor log
 	DefaultLogFlags = log.Ldate | log.Ltime | log.Lmicroseconds
+)
 
+const (
 	// Log levels
 
 	// Critical log level
@@ -182,8 +184,18 @@ func New(configurations ...func(*Logger)) *Logger {
 	return &logger
 }
 
-// SwitchTo change the log level
-func (l *Logger) SwitchTo(level LogLevel) {
+// SwitchTo change the log level, level can be of type string (must match, case insensitive, level name like LevelTrace, LevelCritical etc), int or LogLevel to take effect
+func (l *Logger) SwitchTo(level interface{}) {
+	switch lvl := level.(type) {
+	case string:
+		l.switchToLevel(lvl)
+	case int, LogLevel:
+		l.switchTo(lvl.(LogLevel))
+	}
+}
+
+// switchTo change the log level
+func (l *Logger) switchTo(level LogLevel) {
 	if level < Critical || level > All {
 		return
 	}
@@ -193,8 +205,8 @@ func (l *Logger) SwitchTo(level LogLevel) {
 	l.level = level
 }
 
-// SwitchToLevel change log level, must match (case insensitive) level name (like LevelTrace, LevelCritical etc)
-func (l *Logger) SwitchToLevel(level string) {
+// switchToLevel change log level, must match (case insensitive) level name (like LevelTrace, LevelCritical etc)
+func (l *Logger) switchToLevel(level string) {
 	level = strings.TrimSpace(strings.ToUpper(level))
 
 	l.mutex.Lock()
