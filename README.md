@@ -79,8 +79,8 @@ func main() {
 		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LevelDebug + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LevelTrace + " ===> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.Levelnfo + " =>", Flags: sl.DefaultLogFlags}),
-		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LevellNotice + ": ", Flags: sl.DefaultLogFlags}),
-		sl.SetWarning(sl.Config{Out: os.Stdout, Label: slevelelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
+		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LevelNotice + ": ", Flags: sl.DefaultLogFlags}),
+		sl.SetWarning(sl.Config{Out: os.Stdout, Label: s.LevelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
 		sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LevelError + " ", Flags: sl.DefaultLogFlags}),
 		sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LevelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 	)
