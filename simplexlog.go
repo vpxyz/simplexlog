@@ -201,8 +201,8 @@ func (l *Logger) switchTo(level LogLevel) {
 	}
 
 	l.mutex.Lock()
-	defer l.mutex.Unlock()
 	l.level = level
+	l.mutex.Unlock()
 }
 
 // switchToLevel change log level, must match (case insensitive) level name (like LevelTrace, LevelCritical etc)
