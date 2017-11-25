@@ -75,6 +75,7 @@ import (
 func main() {
 	// Set different tag for any level
 	// If you need, you can use a different io.Writer for each level witch different flags and prefix
+    // If you want color labels, just put colors escape sequence around label. For e.g. "\x1b[20;32m"+sl.LevelInfo+"\x1b[0m"
 	l := sl.New(
 		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LevelDebug + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LevelTrace + " ===> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
