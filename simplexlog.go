@@ -58,7 +58,7 @@ const (
 // LogLevel level of log
 type LogLevel uint
 
-// Log simple log wrapper
+// Logger simple log wrapper
 type Logger struct {
 	logCritical,
 	logError,
