@@ -13,12 +13,12 @@ or ALL to switch on all levels
 
 Simplexlog is concurrent safe.
 
-INSTALLATION
+Installation
 ------------
 
 The package is go gettable:  go get -u github.com/vpxyz/simplexlog
 
-EXAMPLE
+Example
 -------
 
 ``` go
