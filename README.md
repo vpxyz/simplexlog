@@ -35,6 +35,8 @@ func main() {
     // by default use os.Stderr for error, critical, fatal and panic, and os.Stdout for others
     l := simplexlog.New() 
 
+    fmt.Printf("available levels: %s\n", l.LevelNames())
+    
     // the defaul log level is Info
 	l.Trace("Trace log")
 
@@ -77,16 +79,16 @@ func main() {
 	// If you need, you can use a different io.Writer for each level witch different flags and prefix
 	// If you want color labels, just put colors escape sequence around label. For e.g. "\x1b[20;32m"+sl.LevelInfo+"\x1b[0m"
 	l := sl.New(
-		sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LevelDebug + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+        sl.SetDebug(sl.Config{Out: os.Stdout, Label: sl.LevelInfo + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 		sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LevelTrace + " ===> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
-		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.Levelnfo + " =>", Flags: sl.DefaultLogFlags}),
-		sl.SetNotice(sl.Config{Out: os.Stdout, Label: sl.LevelNotice + ": ", Flags: sl.DefaultLogFlags}),
-		sl.SetWarning(sl.Config{Out: os.Stdout, Label: s.LevelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
+		sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.LevelInfo + " =>", Flags: sl.DefaultLogFlags}),
+		sl.SetNotice(sl.Config{Out: os.Stdout, Label: fmt.Sprintf("%-10s", "["+sl.LevelNotice+"]:"), Flags: sl.DefaultLogFlags}),
+		sl.SetWarning(sl.Config{Out: os.Stdout, Label: sl.LevelWarning + ", ARGH! ", Flags: sl.DefaultLogFlags}),
 		sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LevelError + " ", Flags: sl.DefaultLogFlags}),
 		sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LevelCritical + ",GULP! ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
 	)
 
-    // print all log
+    // enable all log level
 	l.SwitchTo(sl.All)
 
 	l.Tracef("Trace log %s", "!!!")

@@ -3,6 +3,7 @@
 package simplexlog
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -81,7 +82,7 @@ type Config struct {
 	Flags int
 }
 
-// SetDefault set the options of default logger used by all log level except Error, Critical level and Fatal and Panic
+// SetDefault set the options of default logger used by all log level except Error, Critical, Fatal and Panic
 func SetDefault(c Config) func(*Logger) {
 	return func(l *Logger) {
 		l.logWarning = log.New(c.Out, c.Label, c.Flags)
@@ -134,7 +135,7 @@ func SetCritical(c Config) func(*Logger) {
 	}
 }
 
-// SetCritical set the options of error logger
+// SetError set the options of error logger
 func SetError(c Config) func(*Logger) {
 	return func(l *Logger) {
 		l.logError = log.New(c.Out, c.Label, c.Flags)
@@ -166,13 +167,13 @@ func SetInfo(c Config) func(*Logger) {
 func New(configurations ...func(*Logger)) *Logger {
 	// default log config
 	logger := Logger{
-		logCritical: log.New(os.Stderr, LevelCritical+" ", DefaultLogFlags),
-		logError:    log.New(os.Stderr, LevelError+" ", DefaultLogFlags),
-		logWarning:  log.New(os.Stdout, LevelWarning+" ", DefaultLogFlags),
-		logNotice:   log.New(os.Stdout, LevelNotice+" ", DefaultLogFlags),
-		logInfo:     log.New(os.Stdout, LevelInfo+" ", DefaultLogFlags),
-		logDebug:    log.New(os.Stdout, LevelDebug+" ", DefaultLogFlags),
-		logTrace:    log.New(os.Stdout, LevelTrace+" ", DefaultLogFlags),
+		logCritical: log.New(os.Stderr, fmt.Sprintf("%-9s", LevelCritical), DefaultLogFlags),
+		logError:    log.New(os.Stderr, fmt.Sprintf("%-9s", LevelError), DefaultLogFlags),
+		logWarning:  log.New(os.Stdout, fmt.Sprintf("%-9s", LevelWarning), DefaultLogFlags),
+		logNotice:   log.New(os.Stdout, fmt.Sprintf("%-9s", LevelNotice), DefaultLogFlags),
+		logInfo:     log.New(os.Stdout, fmt.Sprintf("%-9s", LevelInfo), DefaultLogFlags),
+		logDebug:    log.New(os.Stdout, fmt.Sprintf("%-9s", LevelDebug), DefaultLogFlags),
+		logTrace:    log.New(os.Stdout, fmt.Sprintf("%-9s", LevelTrace), DefaultLogFlags),
 		level:       Info,
 	}
 
@@ -262,6 +263,21 @@ func (l *Logger) LevelName() string {
 	default:
 		return "?"
 	}
+}
+
+// LevelNames return all the availables level name, from the most specific (little data) to the least specific (all data)
+func (l *Logger) LevelNames() string {
+	return strings.Join(
+		[]string{
+			LevelCritical,
+			LevelError,
+			LevelWarning,
+			LevelNotice,
+			LevelInfo,
+			LevelDebug,
+			LevelTrace,
+			LevelAll},
+		", ")
 }
 
 // Infof print, accordind to format, to the Info logger
@@ -399,7 +415,7 @@ func (l *Logger) WarningLogger() *log.Logger {
 	return l.logWarning
 }
 
-// Errorlogger Return the error logger
+// ErrorLogger Return the error logger
 func (l *Logger) ErrorLogger() *log.Logger {
 	return l.logError
 }
