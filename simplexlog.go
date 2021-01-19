@@ -114,6 +114,36 @@ func SetAllDefault(c Config) func(*Logger) {
 	}
 }
 
+// SetOutput set only the output destination for a specified log level
+func SetOutput(level LogLevel, w io.Writer) func(*Logger) {
+	return func(l *Logger) {
+		switch level {
+		case Info:
+			l.logInfo.SetOutput(w)
+		case Notice:
+			l.logNotice.SetOutput(w)
+		case Warning:
+			l.logWarning.SetOutput(w)
+		case Debug:
+			l.logDebug.SetOutput(w)
+		case Trace:
+			l.logTrace.SetOutput(w)
+		case Error:
+			l.logError.SetOutput(w)
+		case Critical:
+			l.logCritical.SetOutput(w)
+		case All:
+			l.logInfo.SetOutput(w)
+			l.logNotice.SetOutput(w)
+			l.logWarning.SetOutput(w)
+			l.logDebug.SetOutput(w)
+			l.logTrace.SetOutput(w)
+			l.logError.SetOutput(w)
+			l.logCritical.SetOutput(w)
+		}
+	}
+}
+
 // SetDebug set the options of debug logger
 func SetDebug(c Config) func(*Logger) {
 	return func(l *Logger) {
@@ -229,6 +259,34 @@ func (l *Logger) switchToLevel(level string) {
 		l.level = Trace
 	case LevelAll:
 		l.level = All
+	}
+}
+
+// SetOutput set the output destination for a specified log level
+func (l *Logger) SetOutput(level LogLevel, w io.Writer) {
+	switch level {
+	case Info:
+		l.logInfo.SetOutput(w)
+	case Notice:
+		l.logNotice.SetOutput(w)
+	case Warning:
+		l.logWarning.SetOutput(w)
+	case Debug:
+		l.logDebug.SetOutput(w)
+	case Trace:
+		l.logTrace.SetOutput(w)
+	case Error:
+		l.logError.SetOutput(w)
+	case Critical:
+		l.logCritical.SetOutput(w)
+	case All:
+		l.logInfo.SetOutput(w)
+		l.logNotice.SetOutput(w)
+		l.logWarning.SetOutput(w)
+		l.logDebug.SetOutput(w)
+		l.logTrace.SetOutput(w)
+		l.logError.SetOutput(w)
+		l.logCritical.SetOutput(w)
 	}
 }
 
