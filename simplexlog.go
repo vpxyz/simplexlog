@@ -290,6 +290,62 @@ func (l *Logger) SetOutput(level LogLevel, w io.Writer) {
 	}
 }
 
+// SetLabel set the label for a specified log level
+func (l *Logger) SetLabel(level LogLevel, label string) {
+	switch level {
+	case Info:
+		l.logInfo.SetPrefix(label)
+	case Notice:
+		l.logNotice.SetPrefix(label)
+	case Warning:
+		l.logWarning.SetPrefix(label)
+	case Debug:
+		l.logDebug.SetPrefix(label)
+	case Trace:
+		l.logTrace.SetPrefix(label)
+	case Error:
+		l.logError.SetPrefix(label)
+	case Critical:
+		l.logCritical.SetPrefix(label)
+	case All:
+		l.logInfo.SetPrefix(label)
+		l.logNotice.SetPrefix(label)
+		l.logWarning.SetPrefix(label)
+		l.logDebug.SetPrefix(label)
+		l.logTrace.SetPrefix(label)
+		l.logError.SetPrefix(label)
+		l.logCritical.SetPrefix(label)
+	}
+}
+
+// SetFlags set the flags for a specified log level
+func (l *Logger) SetFlags(level LogLevel, flag int) {
+	switch level {
+	case Info:
+		l.logInfo.SetFlags(flag)
+	case Notice:
+		l.logNotice.SetFlags(flag)
+	case Warning:
+		l.logWarning.SetFlags(flag)
+	case Debug:
+		l.logDebug.SetFlags(flag)
+	case Trace:
+		l.logTrace.SetFlags(flag)
+	case Error:
+		l.logError.SetFlags(flag)
+	case Critical:
+		l.logCritical.SetFlags(flag)
+	case All:
+		l.logInfo.SetFlags(flag)
+		l.logNotice.SetFlags(flag)
+		l.logWarning.SetFlags(flag)
+		l.logDebug.SetFlags(flag)
+		l.logTrace.SetFlags(flag)
+		l.logError.SetFlags(flag)
+		l.logCritical.SetFlags(flag)
+	}
+}
+
 // Level return the current log level
 func (l *Logger) Level() LogLevel {
 	l.mutex.Lock()
