@@ -12,7 +12,7 @@ The logging levels are: TRACE, DEBUG, CRITICAL, ERROR, WARNING, NOTICE, INFO
 or ALL.
 Functions like Panic or Fatal are also available, their massage are redirect to CRITICAL.
 
-Because simplexlog write to an io.Writer, you can provvide, for e.g, your custom io.Writer for writting function name. See the examples.
+Since simplexlog write to an io.Writer, you can provvide, for e.g, your custom io.Writer for writting name of function. Take a look at the examples.
 
 Simplexlog is concurrent safe.
 
