@@ -379,7 +379,7 @@ func (l *Logger) LevelName() string {
 	}
 }
 
-// LevelNames return all the availables level name, from the most specific (little data) to the least specific (all data)
+// LevelNames return all the availables level name, from the most specific to the least specific (all logs)
 func (l *Logger) LevelNames() string {
 	return strings.Join(
 		[]string{
@@ -394,62 +394,62 @@ func (l *Logger) LevelNames() string {
 		", ")
 }
 
-// Infof print, accordind to format, to the Info logger
+// Infof print, according to format, to the Info logger
 func (l *Logger) Infof(format string, v ...interface{}) {
 	if l.Level() >= Info {
 		l.logInfo.Printf(format, v...)
 	}
 }
 
-// Noticef print, accordind to format, to the Notice logger
+// Noticef print, according to format, to the Notice logger
 func (l *Logger) Noticef(format string, v ...interface{}) {
 	if l.Level() >= Notice {
 		l.logNotice.Printf(format, v...)
 	}
 }
 
-// Warningf print, accordind to format, to the Warning logger
+// Warningf print, according to format, to the Warning logger
 func (l *Logger) Warningf(format string, v ...interface{}) {
 	if l.Level() >= Warning {
 		l.logWarning.Printf(format, v...)
 	}
 }
 
-// Errorf print, accordind to format, to the Error logger
+// Errorf print, according to format, to the Error logger
 func (l *Logger) Errorf(format string, v ...interface{}) {
 	if l.Level() >= Error {
 		l.logError.Printf(format, v...)
 	}
 }
 
-// Criticalf print, accordind to format, to the Critical logger
+// Criticalf print, according to format, to the Critical logger
 func (l *Logger) Criticalf(format string, v ...interface{}) {
 	if l.Level() >= Critical {
 		l.logCritical.Printf(format, v...)
 	}
 }
 
-// Debugf print, accordind to format, to the Debug logger
+// Debugf print, according to format, to the Debug logger
 func (l *Logger) Debugf(format string, v ...interface{}) {
 	if l.Level() >= Debug {
 		l.logDebug.Printf(format, v...)
 	}
 }
 
-// Tracef print, accordind to format, to the Debug logger
+// Tracef print, according to format, to the Debug logger
 func (l *Logger) Tracef(format string, v ...interface{}) {
 	if l.Level() >= Trace {
 		l.logTrace.Printf(format, v...)
 	}
 }
 
-// Fatalf print fatal message, accordind to format, to critical logger, followed by call to os.Exit(1)
+// Fatalf like log.Fatalf print to the Critical logger, according to format, followed by call to os.Exit(1)
 func (l *Logger) Fatalf(format string, v ...interface{}) {
 	l.logCritical.Fatalf(format, v...)
 
 }
 
-// Panicf print panic message to the critical logger, followed by call to panic()
+// Panicf like log.Panicf print to the Critical logger, according to format, followed by call to panic()
 func (l *Logger) Panicf(format string, v ...interface{}) {
 	l.logCritical.Panicf(format, v...)
 }
@@ -503,13 +503,13 @@ func (l *Logger) Trace(a ...interface{}) {
 	}
 }
 
-// Fatal print fatal message to critical logger, followed by call to os.Exit(1)
+// Fatal like log.Fatal, print to the Critical logger, followed by call to os.Exit(1)
 func (l *Logger) Fatal(a ...interface{}) {
 	l.logCritical.Fatal(a...)
 
 }
 
-// Panic print panic message to the critical logger, followed by call to panic()
+// Panic like log.Panic, print to the Critical logger, followed by call to panic()
 func (l *Logger) Panic(a ...interface{}) {
 	l.logCritical.Panic(a...)
 }

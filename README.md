@@ -1,25 +1,30 @@
 SIMPLEXLOG leveled logging library
 ======================
 
-Simplexlog simple wrapper for the go standard log package, that adds log level.
+Simplexlog simple wrapper for the go standard log package, that adds logging levels.
 
-The standard log package is enough (imho) for many applications, but sometimes
-is usefull to have some log level.
-Simplexlog is a wrapper that adds some log level, the ability to use different
-io.Writer for different level.
+The standard `log` package is enough (IMHO) for many applications, but sometimes
+is usefull to have some logging levels.
+Simplexlog adds some logging levels and the ability to use different
+io.Writer for different level. All the standard logging flags can be used.
 
-The log levels are: TRACE, DEBUG, CRITICAL, ERROR, WARNING, NOTICE, INFO
-or ALL to switch on all levels
+The logging levels are: TRACE, DEBUG, CRITICAL, ERROR, WARNING, NOTICE, INFO
+or ALL.
+Functions like Panic or Fatal are also available, their massage are redirect to CRITICAL.
+
+Because simplexlog write to an io.Writer, you can provvide, for e.g, your custom io.Writer for writting function name. See the examples.
 
 Simplexlog is concurrent safe.
 
 Installation
 ------------
 
-The package is go gettable:  go get -u github.com/vpxyz/simplexlog
+The package is go gettable: go get -u github.com/vpxyz/simplexlog
 
 Example
 -------
+
+basic usage:
 
 ``` go
 
@@ -27,8 +32,6 @@ package main
 
 import (
     "github.com/vpxyz/simplexlog"
-    "log"
-    "os"
 )
 
 func main() {
@@ -63,7 +66,59 @@ func main() {
 
 ```
 
-More "complex" example
+custom io.Writer, this approach can be useful even with the standard `log` package:
+
+
+``` go
+
+package main
+
+import (
+	"fmt"
+	"path/filepath"
+	"runtime"
+	"strings"
+
+	sl "github.com/vpxyz/simplexlog"
+)
+
+var (
+	logger *sl.Logger
+)
+
+type LogWriter struct{}
+
+func (f LogWriter) Write(p []byte) (n int, err error) {
+	pc, file, line, ok := runtime.Caller(4)
+	if !ok {
+		file = "?"
+		line = 0
+	}
+
+	fn := runtime.FuncForPC(pc)
+	fmt.Printf("%s: %s, line %d, %s\n", strings.ReplaceAll(string(p), "\n", ""), filepath.Base(file), line, fn.Name())
+	return len(p), nil
+}
+
+func dumb() {
+	logger.Debug("who I am ?")
+}
+
+func main() {
+	// write func name for debugging
+	debugLw := LogWriter{}
+	logger = sl.New(sl.SetDebug(sl.Config{Out: debugLw, Label: fmt.Sprintf("%-9s", sl.LevelDebug), Flags: sl.DefaultLogFlags}))
+	// logger = sl.New()
+	logger.SwitchTo(sl.Debug)
+
+	dumb()
+}
+
+
+```
+
+weird  example:
+
 
 ``` go
 package main
@@ -84,9 +139,9 @@ func main() {
         sl.SetTrace(sl.Config{Out: os.Stdout, Label: sl.LevelTrace + " ==> ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
         sl.SetInfo(sl.Config{Out: os.Stdout, Label: sl.LevelInfo + " =>", Flags: sl.DefaultLogFlags}),
         sl.SetNotice(sl.Config{Out: os.Stdout, Label: fmt.Sprintf("%-10s", "["+sl.LevelNotice+"]:"), Flags: sl.DefaultLogFlags}),
-        sl.SetWarning(sl.Config{Out: os.Stdout, Label: sl.LevelWarning + ", 😒 ", Flags: sl.DefaultLogFlags}),
-        sl.SetError(sl.Config{Out: os.Stderr, Label: sl.LevelError + " ", Flags: sl.DefaultLogFlags}),
-        sl.SetCritical(sl.Config{Out: os.Stderr, Label: sl.LevelCritical + ",😡 ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
+        sl.SetWarning(sl.Config{Out: os.Stdout, Label: " 😒 ", Flags: sl.DefaultLogFlags}),
+        sl.SetError(sl.Config{Out: os.Stderr, Label: " 🥲 " + " ", Flags: sl.DefaultLogFlags}),
+        sl.SetCritical(sl.Config{Out: os.Stderr, Label: " 😡 ", Flags: sl.DefaultLogFlags | log.Lshortfile}),
     )
 
     // enable all log level
@@ -106,7 +161,7 @@ func main() {
 
     l.Critical("Critical log")
 
-    // change level
+    // switch log level
     l.SwitchTo(sl.Warning)
 
     l.Info("This is hidden")
@@ -114,10 +169,10 @@ func main() {
     // if you need, you can pass around an standard log.Logger, bypassing the LogLevel setting
     l.CriticalLogger().Print("test")
 
-    // change the log level using log level name (case insensitive)
+    // switch logging level using logging level name (case insensitive)
     l.SwitchTo("error")
 
-    l.Infof("Info log")
+    l.Infof("Info log %s", "🦇")
 
     l.Noticef("Notice log")
 
@@ -134,7 +189,7 @@ func main() {
     l.SetOutput(sl.Info, &buf)
 
     // change label of Error level
-    l.SetLabel(sl.Error, 😢)
+    l.SetLabel(sl.Error, " 🐛 ")
 
     // change flags of Info level
     l.SetFlags(sl.Info, sl.DefaultLogFlags | log.Lshortfile)
